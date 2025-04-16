@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XJON Video Upload</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f9ff;
+      color: #333;
+      text-align: center;
+      padding: 40px;
+    }
+    .logo {
+      width: 150px;
+      margin-bottom: 20px;
+    }
+    h2 {
+      color: #003366;
+    }
+    input[type="file"] {
+      margin-top: 20px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #0066cc;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #004a99;
+    }
+    video {
+      margin-top: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <img src="https://via.placeholder.com/150x50?text=XJON+Logo" alt="XJON Logo" class="logo">
+  <h2>Upload Your Video</h2>
+  <input type="file" id="videoInput" accept="video/*">
+  <br>
+  <button onclick="uploadVideo()">Upload</button>
+  <br><br>
+  <video id="videoPreview" width="100%" controls></video>
+
+  <script>
+    function uploadVideo() {
+      const file = document.getElementById('videoInput').files[0];
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', 'your_upload_preset');
+
+      fetch('https://api.cloudinary.com/v1_1/your_cloud_name/video/upload', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('videoPreview').src = data.secure_url;
+      })
+      .catch(err => alert("Upload Failed"));
+    }
+  </script>
+</body>
+</html>
